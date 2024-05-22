@@ -1,0 +1,4 @@
+C:\Users\hvurq\Documents\Data Science\FormacaoCD\todos os arquivos\31.Prática em Python\dados\Credit.csv
+C:\Users\hvurq\Documents\Data Science\FormacaoCD\todos os arquivos\31.Prática em Python\dados\Credit2.csv
+C:\Users\hvurq\Documents\Data Science\FormacaoCD\todos os arquivos\31.Prática em Python\dados\iris.csv
+C:\Users\hvurq\Documents\Data Science\FormacaoCD\todos os arquivos\31.Prática em Python\dados\NovoCredit.csv
