@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block page_title %}
+    Not Found
+{% endblock page_title %}
+{% block alternative_h1 %}
+    <h1>Page not found</h1>
+{% endblock alternative_h1 %}
+{% block alternative_p %}
+{% endblock alternative_p %}
+{% block alternative_body %} 
+<section>
+    <div style="display: inline-block;text-align: center;">
+        <img src="{{url_for('static',filename='icon/404-error-template-3.webp')}}"  style="max-width: 100%;align-self:center;"/>
+    </div>
+</section>    
+{% endblock  %}

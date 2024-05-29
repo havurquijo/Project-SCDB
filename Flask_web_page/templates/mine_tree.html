@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block page_title %}
+    Mining
+{% endblock page_title %}
+{% block alternative_h1 %}
+    <h1>Mine the data</h1>
+{% endblock alternative_h1 %}
+{% block alternative_p %}
+{% endblock alternative_p %}
+{% block alternative_body %} 
+    <form class="form_predict" method="post" id="myForm_mining">
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Download</button>
+        <div class="d-flex align-items-center m-2 invisible" id="loading">
+            <strong role="status">Mining and preprocessing...</strong>
+            <div class="spinner-border ms-auto" aria-hidden="true"></div>
+        </div>
+        <div id="error-message" class="alert alert-danger mt-2" role="alert" style="display: none;">
+            Ocorreu um erro ao enviar o formulário. Tente novamente.
+        </div>
+    </form>
+{% endblock alternative_body %}
