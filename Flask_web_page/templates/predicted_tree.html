@@ -9,7 +9,7 @@
     <p style="text-align: center;" id="accuracy_message" class="{{accuracy_visible}}" >Accuracy of {{accuracy_var}}</p>
 {% endblock alternative_p %}
 {% block alternative_body %}
-<form method="post">
+<form method="post" id="myForm_save">
     <table class="table_p">
         <tr class="tr_p">
             <th class="th_p">Variable</th>
@@ -61,7 +61,10 @@
         </tr>
     </table>
     <div style="padding-top: 2.5%;">
-        <button type="submit" class="btn btn-primary" >Save as</button>
+        <button type="submit" class="btn btn-primary" id="saveButton" >Save as</button>
+    </div>
+    <div id="error-message_saving" class="alert alert-danger mt-2" role="alert" style="display: none;">
+        Ocorreu um erro ao enviar o formulário. Tente novamente.
     </div>
 </form>
 {% endblock alternative_body %}

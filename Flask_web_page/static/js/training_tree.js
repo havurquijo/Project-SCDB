@@ -18,21 +18,21 @@ document.addEventListener('DOMContentLoaded', function() {
           .then(data => {
               if (data.status === 'success') {
                   // Redirecionar para a página de resultado
-                  const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastTrainedTree, { delay: 3000 }); // 10 seconds
+                  const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastTrainedTree, { delay: 2000 }); // 10 seconds
                   toastTrainedTree.querySelector('.toast-body').textContent = data.message;
                   toastBootstrap.show();
                   // Redirect to the results page after showing the toast
                 setTimeout(() => {
                     window.location.href = data.redirect;
-                }, 3000); // Redirect after the toast has been visible for 3 seconds
+                }, 2000); // Redirect after the toast has been visible for 3 seconds
               }else if (data.status === 'fail') {
-                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastTrainedTree, { delay: 2500 }); // 10 seconds
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastTrainedTree, { delay: 2000 }); // 10 seconds
                 toastTrainedTree.querySelector('.toast-body').textContent = data.message;
                 toastBootstrap.show();
                     // Redirect to the results page after showing the toast
                 setTimeout(() => {
                     window.location.href = data.redirect;
-                }, 2500);
+                }, 2000);
               }else {
                   throw new Error('Erro no envio do formulário');
               }
@@ -45,12 +45,3 @@ document.addEventListener('DOMContentLoaded', function() {
           });
     });
 });
-if (data.status === 'success') {
-    // Redirecionar para a página de resultado
-    const toast_trained_tree = document.getElementById('liveToast');
-    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_trained_tree);
-    //toastBootstrap.body(data.message)
-    toastBootstrap.show()
-} else {
-    throw new Error('Erro no envio do formulário');
-};

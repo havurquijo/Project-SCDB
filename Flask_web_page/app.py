@@ -9,8 +9,13 @@ from pandas import DataFrame
 from markupsafe import escape
 from tkinter.filedialog import asksaveasfilename
 from tkinter import *
+from flask_caching import Cache
 
 app = Flask(__name__)
+
+# Configure the cache
+cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
+cache.init_app(app)
 
 @app.route("/")#url for routing
 #This function basically writes the html page
@@ -77,41 +82,58 @@ def predict_tree():
     else:
         return render_template("predict_tree.html",accuracy_visible="p_hidden", accuracy_var="0.0"+"%",decisionDirection="= Not calculated yet")
 
-@app.route("/predicted_tree",methods=["POST","GET"])
+@app.route("/predicted_tree", methods=["GET","POST"])
 def predicted_tree():
     values = request.args.to_dict()
-    accuracy_visible = values['accuracy_visible']
-    accuracy_var = values['accuracy_var']
-    voteId = values["voteId"]
-    issueArea = values["issueArea"]
-    petitionerState = values["petitionerState"]
-    respondentState = values["respondentState"]
-    jurisdiction = values["jurisdiction"]
-    caseOriginState = values["caseOriginState"]
-    caseSourceState = values["caseSourceState"]
-    certReason = values["certReason"]
-    lcDisposition = values["lcDisposition"]
-    decisionDirection = values["decisionDirection"]
+    accuracy_visible = values.get('accuracy_visible', '')
+    accuracy_var = values.get('accuracy_var', '')
+    voteId = values.get("voteId", '')
+    issueArea = values.get("issueArea", '')
+    petitionerState = values.get("petitionerState", '')
+    respondentState = values.get("respondentState", '')
+    jurisdiction = values.get("jurisdiction", '')
+    caseOriginState = values.get("caseOriginState", '')
+    caseSourceState = values.get("caseSourceState", '')
+    certReason = values.get("certReason", '')
+    lcDisposition = values.get("lcDisposition", '')
+    decisionDirection = values.get("decisionDirection", '')
     if request.method=="POST":
-        new_values = {key: value for key, value in values.items() if (key != 'accuracy_visible' and key != 'decisionDirection')}
-        new_values['decisionDirection'] = values['decisionDirection']
-        save_prediction_csv(new_values)#for saving the values of the table
-        return redirect(url_for("predict_tree"))
+        values = request.values.to_dict()
+        print(values)
+        was_saved=False
+        df = DataFrame([values])  # Wrap new_values in a list to create a DataFrame with one row
+        tk = Tk()
+        filename = asksaveasfilename(initialfile = 'Untitled.csv',
+            defaultextension=".csv",filetypes=[("All Files","*.*"),("Comma Separated Values Source File","*.csv")])
+        tk.destroy()
+        try:
+            df.to_csv(filename, sep=';', index=False)
+            print("Data saved successfully.")
+            was_saved= True
+        except Exception as e:
+            print(f"Error saving data: {e}")
+        
+
+        #was_saved = save_prediction_csv(values)
+        if was_saved:
+            response = jsonify({'status': 'success', 'message': 'File successfully saved!', 'redirect': url_for('predict_tree')})
+        else:
+            response = jsonify({'status': 'fail', 'message': 'Error while saving!'})
+        return response
     return render_template("predicted_tree.html",
-                                accuracy_visible=accuracy_visible, 
-                                accuracy_var=accuracy_var,
-                                decisionDirection=decisionDirection,
-                                voteId = voteId,
-                                issueArea = issueArea,
-                                petitionerState = petitionerState,
-                                respondentState = respondentState,
-                                jurisdiction = jurisdiction,
-                                caseOriginState = caseOriginState,
-                                caseSourceState = caseSourceState,
-                                certReason = certReason,
-                                lcDisposition = lcDisposition
-                               )
-    
+                           accuracy_visible=accuracy_visible,
+                           accuracy_var=accuracy_var,
+                           decisionDirection=decisionDirection,
+                           voteId=voteId,
+                           issueArea=issueArea,
+                           petitionerState=petitionerState,
+                           respondentState=respondentState,
+                           jurisdiction=jurisdiction,
+                           caseOriginState=caseOriginState,
+                           caseSourceState=caseSourceState,
+                           certReason=certReason,
+                           lcDisposition=lcDisposition)
+
 
 @app.route("/mine_tree", methods=["POST","GET"])
 def mine_tree():
@@ -141,22 +163,24 @@ def train_tree():
         return jsonify({'status': 'success', 'message':'Machine trained succesfully!', 'redirect': url_for('predict_tree',show_accuracy="true",accuracy_visible="p_shown",accuracy_var=f"{accuracy*100:.1f}"+"%")})
     return render_template("train_tree.html")
 
-def save_prediction_csv(new_values):
+def save_prediction_csv(new_values)->bool:
     if new_values:
         df = DataFrame([new_values])  # Wrap new_values in a list to create a DataFrame with one row
         tk = Tk()
         filename = asksaveasfilename(initialfile = 'Untitled.csv',
             defaultextension=".csv",filetypes=[("All Files","*.*"),("Comma Separated Values Source File","*.csv")])
         if filename is None: # asksaveasfile return `None` if dialog closed with "cancel".
-            return 
+            return False
         tk.destroy()
         try:
             df.to_csv(filename, sep=';', index=False)
             print("Data saved successfully.")
+            return True
         except Exception as e:
             print(f"Error saving data: {e}")
     else:
         print("No data to save.")
+    return False   
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',debug=True)
