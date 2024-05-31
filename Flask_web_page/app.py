@@ -4,9 +4,11 @@ from predict_decision_tree import predict_decision_tree as predict_tree_class
 from train_decision_tree import train_decision_tree as train_tree_class
 import time
 from os.path import exists
-from pickle import load
 from numpy import savetxt, loadtxt
-from numpy import array
+from pandas import DataFrame
+from markupsafe import escape
+from tkinter.filedialog import asksaveasfilename
+from tkinter import *
 
 app = Flask(__name__)
 
@@ -14,7 +16,7 @@ app = Flask(__name__)
 #This function basically writes the html page
 def homePage():
     #This value at the return should be changed by a html document separately created
-    return render_template("index.html", some_var="Hermes")
+    return render_template("index.html")
 
 @app.route("/<some_url>")
 def notFound(some_url):
@@ -31,8 +33,9 @@ def admin():
     return "<h1>Admin page</h1>"
 
 @app.route("/user")
-def user():
-    return "<h1>User page</h1>"
+@app.route("/user/<user_name>")
+def user(user_name='default'):
+    return f"<h1>User page, user name {escape(user_name)}</h1>"
 
 @app.route("/predict_tree", methods=["POST","GET"])
 def predict_tree():
@@ -55,7 +58,7 @@ def predict_tree():
         predict_tree_ = predict_tree_class()  
         predict_tree_.set_predictors([voteId,issueArea,petitionerState,respondentState,jurisdiction,caseOriginState,caseSourceState,certReason,lcDisposition])      
         decisionDirection=predict_tree_.predict_self()
-        return render_template("predicted_tree.html",
+        return redirect(url_for("predicted_tree",
                                 accuracy_visible="p_shown", 
                                 accuracy_var=f"{accuracy*100:.1f}"+"%",
                                 decisionDirection=decisionDirection,
@@ -68,41 +71,47 @@ def predict_tree():
                                 caseSourceState = caseSourceState,
                                 certReason = certReason,
                                 lcDisposition = lcDisposition
-                               )
+                               ))
     if visible:
         return render_template("predict_tree.html",accuracy_visible="p_shown", accuracy_var=f"{accuracy*100:.1f}"+"%",decisionDirection="= Not calculated yet")
     else:
         return render_template("predict_tree.html",accuracy_visible="p_hidden", accuracy_var="0.0"+"%",decisionDirection="= Not calculated yet")
 
-#@app.route("/predicted_tree")
-#def predicted_tree(accuracy,
-#    voteId,
-#    issueArea,
-#    petitionerState,
-#    respondentState,
-#    jurisdiction,
-#    caseOriginState,
-#    caseSourceState,
-#    certReason,
-#    lcDisposition,
-#    decisionDirection
-#    ):
-#    return render_template(
-#        "predicted_tree.html",
-#        accuracy_visible="true",
-#        accuracy_var=accuracy,
-#        decisionDirection="= "+f"{decisionDirection:.0f}",
-#        voteId = voteId,
-#        issueArea = issueArea,
-#        petitionerState = petitionerState,
-#        respondentState = respondentState,
-#        jurisdiction = jurisdiction,
-#        caseOriginState = caseOriginState,
-#        caseSourceState = caseSourceState,
-#        certReason = certReason,
-#        lcDisposition = lcDisposition
-#        )
-
+@app.route("/predicted_tree",methods=["POST","GET"])
+def predicted_tree():
+    values = request.args.to_dict()
+    accuracy_visible = values['accuracy_visible']
+    accuracy_var = values['accuracy_var']
+    voteId = values["voteId"]
+    issueArea = values["issueArea"]
+    petitionerState = values["petitionerState"]
+    respondentState = values["respondentState"]
+    jurisdiction = values["jurisdiction"]
+    caseOriginState = values["caseOriginState"]
+    caseSourceState = values["caseSourceState"]
+    certReason = values["certReason"]
+    lcDisposition = values["lcDisposition"]
+    decisionDirection = values["decisionDirection"]
+    if request.method=="POST":
+        new_values = {key: value for key, value in values.items() if (key != 'accuracy_visible' and key != 'decisionDirection')}
+        new_values['decisionDirection'] = values['decisionDirection']
+        save_prediction_csv(new_values)#for saving the values of the table
+        return redirect(url_for("predict_tree"))
+    return render_template("predicted_tree.html",
+                                accuracy_visible=accuracy_visible, 
+                                accuracy_var=accuracy_var,
+                                decisionDirection=decisionDirection,
+                                voteId = voteId,
+                                issueArea = issueArea,
+                                petitionerState = petitionerState,
+                                respondentState = respondentState,
+                                jurisdiction = jurisdiction,
+                                caseOriginState = caseOriginState,
+                                caseSourceState = caseSourceState,
+                                certReason = certReason,
+                                lcDisposition = lcDisposition
+                               )
+    
 
 @app.route("/mine_tree", methods=["POST","GET"])
 def mine_tree():
@@ -131,6 +140,23 @@ def train_tree():
         #passos para ver se o arquivo foi baixado 
         return jsonify({'status': 'success', 'message':'Machine trained succesfully!', 'redirect': url_for('predict_tree',show_accuracy="true",accuracy_visible="p_shown",accuracy_var=f"{accuracy*100:.1f}"+"%")})
     return render_template("train_tree.html")
+
+def save_prediction_csv(new_values):
+    if new_values:
+        df = DataFrame([new_values])  # Wrap new_values in a list to create a DataFrame with one row
+        tk = Tk()
+        filename = asksaveasfilename(initialfile = 'Untitled.csv',
+            defaultextension=".csv",filetypes=[("All Files","*.*"),("Comma Separated Values Source File","*.csv")])
+        if filename is None: # asksaveasfile return `None` if dialog closed with "cancel".
+            return 
+        tk.destroy()
+        try:
+            df.to_csv(filename, sep=';', index=False)
+            print("Data saved successfully.")
+        except Exception as e:
+            print(f"Error saving data: {e}")
+    else:
+        print("No data to save.")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',debug=True)

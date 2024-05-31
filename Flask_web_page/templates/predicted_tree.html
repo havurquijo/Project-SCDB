@@ -6,51 +6,62 @@
     <h1>Result of prediction</h1>
 {% endblock alternative_h1 %}
 {% block alternative_p %}
-    <p id="accuracy_message" class="{{accuracy_visible}}" >Accuracy of {{accuracy_var}}</p>
+    <p style="text-align: center;" id="accuracy_message" class="{{accuracy_visible}}" >Accuracy of {{accuracy_var}}</p>
 {% endblock alternative_p %}
-{% block alternative_body %} 
-    <form class="form_predict">
-        <div class="mb-3">
-            <label class="form-label" style="color: rgb(248, 40, 40);">Decision Direction {{decisionDirection}}</label>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Vote ID</label>
-            <input disabled value="{{voteId}}" type="text" class="form-control" name="voteID">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Issue Area</label>
-            <input disabled value="{{issueArea}}" type="text" class="form-control" name="issueArea">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Petitioner State</label>
-            <input disabled value="{{petitionerState}}" type="text" class="form-control" name="petitionerState">
-            
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Respondent State</label>
-            <input disabled value="{{respondentState}}" type="text" class="form-control" name="respondentState">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Jurisdiction</label>
-            <input disabled value="{{jurisdiction}}" type="text" class="form-control" name="jurisdiction">
-            
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Case Origin State</label>
-            <input disabled value="{{caseOriginState}}" type="text" class="form-control" name="caseOriginState">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Case Source State</label>
-            <input disabled value="{{caseSourceState}}" type="text" class="form-control" name="caseSourceState">
-            
-        </div>
-        <div class="mb-3">
-            <label class="form-label">certReason</label>
-            <input disabled value="{{certReason}}" type="text" class="form-control" name="certReason">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">lcDisposition</label>
-            <input disabled value="{{lcDisposition}}" type="text" class="form-control" name="lcDisposition">
-        </div>
-    </form>
+{% block alternative_body %}
+<form method="post">
+    <table class="table_p">
+        <tr class="tr_p">
+            <th class="th_p">Variable</th>
+            <th class="th_p">Values</th>
+        </tr>
+        <tr class="tr_p2">
+            {% if decisionDirection==2 %}
+            <td class="td_p2">Predicted Decision Direction (2.0 -> liberal)</td>
+            {% else %}
+            <td class="td_p2">Predicted Decision Direction (1.0 -> conservative)</td>
+            {% endif %}
+            <td class="td_p2">{{decisionDirection}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Vote ID</td>
+            <td class="td_p">{{voteId}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Issue Area</td>
+            <td class="td_p">{{issueArea}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Petitioner State</td>
+            <td class="td_p">{{petitionerState}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Respondent State</td>
+            <td class="td_p">{{respondentState}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Jurisdiction</td>
+            <td class="td_p">{{jurisdiction}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Case Origin State</td>
+            <td class="td_p">{{caseOriginState}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Case Source State</td>
+            <td class="td_p">{{caseSourceState}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Reason for Granting Cert</td>
+            <td class="td_p">{{certReason}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Lower Court Disposition</td>
+            <td class="td_p">{{lcDisposition}}</td>
+        </tr>
+    </table>
+    <div style="padding-top: 2.5%;">
+        <button type="submit" class="btn btn-primary" >Save as</button>
+    </div>
+</form>
 {% endblock alternative_body %}
