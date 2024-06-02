@@ -16,9 +16,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from flask import Flask,redirect,url_for,render_template,request,jsonify,send_file # type: ignore
-from mine_decision_tree import mine_decision_tree as mine_tree_class
-from predict_decision_tree import predict_decision_tree as predict_tree_class
-from train_decision_tree import train_decision_tree as train_tree_class
+from .mine_decision_tree import mine_decision_tree as mine_tree_class
+from .predict_decision_tree import predict_decision_tree as predict_tree_class
+from .train_decision_tree import train_decision_tree as train_tree_class
 import time
 from os import remove
 from os.path import exists
