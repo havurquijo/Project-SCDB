@@ -2,8 +2,8 @@
 
 ## Table of content
 [Installation](#installation)
-[Usage and requirements](#usage)
-[Machine learning models](#machinelearning)
+[Usage and requirements](#usage-and-requirements)
+[Machine learning models](#machine-learning-models)
 [Interpretation](#interpretation)
 
 # Installation
