@@ -2,11 +2,8 @@ from pickle import dump
 from pandas import  DataFrame, read_csv
 from os.path import exists
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import confusion_matrix, accuracy_score
-from yellowbrick.classifier import ConfusionMatrix
-from sklearn.tree import export_graphviz, DecisionTreeClassifier,plot_tree
-from mine_decision_tree import mine_decision_tree as mine_tree
+from sklearn.tree import DecisionTreeClassifier,plot_tree
 
 class train_decision_tree:
     #atributtes

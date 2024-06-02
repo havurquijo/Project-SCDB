@@ -7,7 +7,6 @@ from os import remove
 from os.path import exists
 from numpy import savetxt, loadtxt
 from pandas import DataFrame
-from markupsafe import escape
 
 app = Flask(__name__)
 
@@ -20,21 +19,14 @@ def homePage():
 @app.route("/<some_url>")
 def notFound(some_url):
     match some_url:
-        case "user":
-            return redirect(url_for("admin"))
         case "admin":
-            return redirect(url_for("user"))
+            return redirect(url_for("admin"))
         case _:
             return render_template("notFound.html")
 
 @app.route("/admin")
 def admin():
     return "<h1>Admin page</h1>"
-
-@app.route("/user")
-@app.route("/user/<user_name>")
-def user(user_name='default'):
-    return f"<h1>User page, user name {escape(user_name)}</h1>"
 
 @app.route("/predict_tree", methods=["POST","GET"])
 def predict_tree():
