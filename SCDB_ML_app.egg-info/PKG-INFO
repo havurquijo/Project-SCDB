@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: SCDB_ML_app
+Version: 1.0
+Requires-Dist: flask
+Requires-Dist: pathlib
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: requests
+Requires-Dist: pickle
+Requires-Dist: zipfile
+Requires-Dist: time
+Requires-Dist: os

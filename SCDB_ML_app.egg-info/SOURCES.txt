@@ -1,0 +1,7 @@
+README.md
+setup.py
+SCDB_ML_app.egg-info/PKG-INFO
+SCDB_ML_app.egg-info/SOURCES.txt
+SCDB_ML_app.egg-info/dependency_links.txt
+SCDB_ML_app.egg-info/requires.txt
+SCDB_ML_app.egg-info/top_level.txt

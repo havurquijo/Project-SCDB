@@ -1,0 +1,10 @@
+flask
+pathlib
+pandas
+numpy
+scikit-learn
+requests
+pickle
+zipfile
+time
+os
