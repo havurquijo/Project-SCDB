@@ -1,21 +1,15 @@
-from flask import Flask, redirect, url_for, render_template, request,jsonify # type: ignore
+from flask import Flask,redirect,url_for,render_template,request,jsonify,send_file # type: ignore
 from mine_decision_tree import mine_decision_tree as mine_tree_class
 from predict_decision_tree import predict_decision_tree as predict_tree_class
 from train_decision_tree import train_decision_tree as train_tree_class
 import time
+from os import remove
 from os.path import exists
 from numpy import savetxt, loadtxt
 from pandas import DataFrame
 from markupsafe import escape
-from tkinter.filedialog import asksaveasfilename
-from tkinter import *
-from flask_caching import Cache
 
 app = Flask(__name__)
-
-# Configure the cache
-cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
-cache.init_app(app)
 
 @app.route("/")#url for routing
 #This function basically writes the html page
@@ -84,6 +78,7 @@ def predict_tree():
 
 @app.route("/predicted_tree", methods=["GET","POST"])
 def predicted_tree():
+    remove_cache_filecsv()
     values = request.args.to_dict()
     accuracy_visible = values.get('accuracy_visible', '')
     accuracy_var = values.get('accuracy_var', '')
@@ -98,28 +93,18 @@ def predicted_tree():
     lcDisposition = values.get("lcDisposition", '')
     decisionDirection = values.get("decisionDirection", '')
     if request.method=="POST":
-        values = request.values.to_dict()
-        print(values)
-        was_saved=False
+        values_ = request.values.to_dict()
+        values = {key:value for key, value in values_.items() if key!='accuracy_visible' and key!='decisionDirection'}
+        values['decisionDirection']=values_['decisionDirection']
         df = DataFrame([values])  # Wrap new_values in a list to create a DataFrame with one row
-        tk = Tk()
-        filename = asksaveasfilename(initialfile = 'Untitled.csv',
-            defaultextension=".csv",filetypes=[("All Files","*.*"),("Comma Separated Values Source File","*.csv")])
-        tk.destroy()
+        filename = "predicted_decisionDirection_DTreeC.csv"
         try:
             df.to_csv(filename, sep=';', index=False)
-            print("Data saved successfully.")
-            was_saved= True
         except Exception as e:
             print(f"Error saving data: {e}")
-        
+        #return send_from_directory(myPath,filename,as_attachment=True)
+        return send_file(filename,as_attachment=True)
 
-        #was_saved = save_prediction_csv(values)
-        if was_saved:
-            response = jsonify({'status': 'success', 'message': 'File successfully saved!', 'redirect': url_for('predict_tree')})
-        else:
-            response = jsonify({'status': 'fail', 'message': 'Error while saving!'})
-        return response
     return render_template("predicted_tree.html",
                            accuracy_visible=accuracy_visible,
                            accuracy_var=accuracy_var,
@@ -163,24 +148,17 @@ def train_tree():
         return jsonify({'status': 'success', 'message':'Machine trained succesfully!', 'redirect': url_for('predict_tree',show_accuracy="true",accuracy_visible="p_shown",accuracy_var=f"{accuracy*100:.1f}"+"%")})
     return render_template("train_tree.html")
 
-def save_prediction_csv(new_values)->bool:
-    if new_values:
-        df = DataFrame([new_values])  # Wrap new_values in a list to create a DataFrame with one row
-        tk = Tk()
-        filename = asksaveasfilename(initialfile = 'Untitled.csv',
-            defaultextension=".csv",filetypes=[("All Files","*.*"),("Comma Separated Values Source File","*.csv")])
-        if filename is None: # asksaveasfile return `None` if dialog closed with "cancel".
-            return False
-        tk.destroy()
-        try:
-            df.to_csv(filename, sep=';', index=False)
-            print("Data saved successfully.")
-            return True
-        except Exception as e:
-            print(f"Error saving data: {e}")
-    else:
-        print("No data to save.")
-    return False   
+def dowload_file():
+    return
+
+def upload_file():
+    return
+
+def remove_cache_filecsv():
+    if exists('predicted_decisionDirection_DTreeC.csv'):
+        remove('predicted_decisionDirection_DTreeC.csv')
+        return True
+    return False
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',debug=True)
