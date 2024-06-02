@@ -1,1 +1,1 @@
-flask_app
+scdb_ml_app
