@@ -1,5 +1,6 @@
 LICENSE.txt
 README.md
+licenseheader.txt
 setup.cfg
 setup.py
 SCDB_ML_app.egg-info/PKG-INFO

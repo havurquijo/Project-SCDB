@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 setup(
   name = 'SCDB_ML_app',         # How you named your package folder (MyLib)
-  packages=find_packages(),   # Chose the same as "name"
-  version = '1.0.0',      # Start with a small number and increase it with every change you make
+  packages=find_packages(),   # 
+  version = '1.0.1',      # Start with a small number and increase it with every change you make
   license='AGPL 3.0',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'A MACHINE LEARNING ANALYZER DEPLOYED INTO A WEBPAGE',   # Give a short description about your library
   author = 'HERMES A V URQUIJO',                   # Type in your name

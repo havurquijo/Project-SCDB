@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: SCDB_ML_app
-Version: 1.0.0
-Summary: A MACHINE LEARNING ANALIZER DEPLOYED INTO A WEBPAGE
+Version: 1.0.1
+Summary: A MACHINE LEARNING ANALYZER DEPLOYED INTO A WEBPAGE
 Home-page: https://github.com/havurquijo/Project-SCDB
 Download-URL: https://github.com/havurquijo/Project-SCDB/archive/refs/tags/v1.0.0-alpha.tar.gz
 Author: HERMES A V URQUIJO
@@ -14,6 +14,7 @@ Classifier: Topic :: Software Development :: Build Tools
 Classifier: License :: OSI Approved :: GNU Affero General Public License v3
 Classifier: Programming Language :: Python :: 3.12
 License-File: LICENSE.txt
+License-File: licenseheader.txt
 Requires-Dist: flask
 Requires-Dist: pathlib
 Requires-Dist: pandas
