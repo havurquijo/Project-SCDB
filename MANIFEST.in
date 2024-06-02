@@ -1,0 +1,7 @@
+include README.md
+recursive-include scdb_ml_app/models *
+recursive-include scdb_ml_app/static *
+recursive-include scdb_ml_app/static/js *
+recursive-include scdb_ml_app/static/icon *
+recursive-include scdb_ml_app/static/styles *
+recursive-include scdb_ml_app/templates *
