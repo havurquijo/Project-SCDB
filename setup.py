@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 setup(
   name = 'SCDB_ML_app',         # How you named your package folder (MyLib)
   packages=find_packages(),   # 
-  version = '1.0.1',      # Start with a small number and increase it with every change you make
+  version = '1.0.2',      # Start with a small number and increase it with every change you make
   license='AGPL 3.0',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'A MACHINE LEARNING ANALYZER DEPLOYED INTO A WEBPAGE',   # Give a short description about your library
   author = 'HERMES A V URQUIJO',                   # Type in your name
@@ -23,12 +23,8 @@ setup(
             'pandas',
             'numpy',
             'scikit-learn',
-            'requests',
-            'pickle',
-            'zipfile',
-            'time',
-            'os'
-      ],
+            'requests'
+            ],
   classifiers=[
     'Development Status :: 3 - Alpha',      # Choose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
     'Intended Audience :: Developers',      # Define that your audience are developers
