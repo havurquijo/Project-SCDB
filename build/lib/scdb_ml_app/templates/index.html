@@ -1,0 +1,745 @@
+<!--
+    SCDB-ML-app is a deployed app to analyze the U.S. Supreme Court Database
+    Copyright (C) 2024  HERMES A. V. URQUIJO
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+{% extends "base.html" %}
+{% block page_title %}Home page{% endblock %}
+{% block alternative_h1 %}
+    <h1>About</h1>
+{% endblock alternative_h1 %}
+{% block alternative_p %}
+<article>
+    <p style="text-align: justify;">
+        The <a class="a_link" href="http://scdb.wustl.edu/data.php">Supreme Court Database</a> is the definitive source for researchers, students, journalists, and citizens interested in the U.S. Supreme Court. The Database contains over two hundred pieces of information about each case decided by the Court between the 1791 and 2022 terms. Examples include the identity of the court whose decision the Supreme     Court reviewed, the parties to the suit, the legal provisions considered in the case, and the votes of the Justices.
+    </p>
+    <p style="text-align: justify;">
+        <a class="a_link" href="http://scdb.wustl.edu/data.php">Justice Centered</a> data includes a set of justice votes for each dispute, along with the case information. The unit of analysis is the vote. These data should be used if the votes of the justices are of interest.
+    </p>
+</article>
+<section>
+    <article>
+        <h3>Decision tree clssifier</h3>
+        <h4>Concept</h4>
+        <p style="text-align: justify;">
+            <a href="https://en.wikipedia.org/wiki/Decision_tree_learning" class="a_link">Decision tree learning</a> is a supervised learning approach used in statistics, data mining and machine learning. In this formalism, a classification or regression decision tree is used as a predictive model to draw conclusions about a set of observations.
+
+            Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead to those class labels. Decision trees where the target variable can take continuous values (typically real numbers) are called regression trees. More generally, the concept of regression tree can be extended to any kind of object equipped with pairwise dissimilarities such as categorical sequences.
+
+            Decision trees are among the most popular machine learning algorithms given their intelligibility and simplicity.
+
+            In decision analysis, a decision tree can be used to visually and explicitly represent decisions and decision making. In data mining, a decision tree describes data (but the resulting classification tree can be an input for decision making).
+        </p>
+        <h4 style="margin-top: 5%;">Variables used in this model</h4>
+        <div class="accordion accordion-flush" id="accordionFlushExample" style="padding-left: 10%;padding-right: 10%;">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" id="voteId_description">
+                    voteId
+                </button>
+              </h2>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body" style="text-align: center;">
+                    <div class="div_table">
+                        <table>
+                            <tr>
+                                <th>Online Code Book</th>
+                                <th>Spaeth Name</th>
+                                <th>Normalizations</th>
+                            </tr>
+                            <tr>
+                                <td>SCDB Vote ID</td>
+                                <td>n/a</td>    
+                                <td>n/a</td>    
+                            </tr>
+                        </table>
+                    </div>
+                    <p>
+                        This is the fourth of four unique internal identification numbers.
+                    </p>
+                    <p>
+                        The first four digits are the term. The next four are the case within the term (starting at 001 and counting up). The next two are the number of dockets consolidated under the U.S. Reports citation (starting at 01 and counting up). The next two are the number of issues and legal provisions within the case (starting at 01 and counting up). The next two indicate a split vote within an issue or legal provision (01 for only one vote; 02 if a split vote). The final two represent the vote in the case (usually runs <a style="color: rgb(165, 51, 51);"> 01 to 09</a>, but fewer if less than all justices participated).</div>
+                    </p>
+                    </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo" id="issueArea_description">
+                    issueArea
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="div_table">
+                        <table>
+                            <tr>
+                                <th>Online Code Book</th>
+                                <th>Spaeth Name</th>
+                                <th>Normalizations</th>
+                            </tr>
+                            <tr>
+                                <td>Issue Area</td>
+                                <td>VALUE</td>    
+                                <td>14 values</td>    
+                            </tr>
+                        </table>
+                    </div>
+                    <p>
+                        This variable simply separates the issues identified in the preceding variable (issue) into the following larger categories: criminal procedure (issues 10010-10600), civil rights (issues 20010-20410), First Amendment (issues 30010-30020), due process (issues 40010-40070), privacy (issues 50010-50040), attorneys' or governmental officials' fees or compensation (issues 60010-60040), unions (issues 70010-70210), economic activity (issues 80010-80350), judicial power (issues 90010-90520), federalism (issues 100010-100130), interstate relation (issues 110010-110030), federal taxation (issues 120010-120040), miscellaneous (issues 130010-130020), and private law (issues 140010-140080).
+                    </p>
+                    <p>
+                        The contents of these issue areas are both over- and under-specfied; especially those of largest size: criminal procedure, civil rights,and economic ativity. In the interests of precision, users focusing on this variable would be wise to specify the components of a specific issue area that their analyses include or exclude.
+                    </p>    
+                    <p>
+                        Note that some of the issues in an issue area will have a distinctive direction at variance from the issue area's overal direction. E.g., the liability variables 80060, 80070, and 80080. See decision direction.
+                    </p>
+                    <h6 style="font-weight: bold;text-align: justify;">Values:</h6>
+                    <ol style="text-align: justify;">
+                        <li>Criminal Procedure</li>
+                        <li>Civil Rights</li>
+                        <li>First Amendment</li>
+                        <li>Due Process</li>
+                        <li>Privacy</li>
+                        <li>Attorneys</li>
+                        <li>Unions</li>
+                        <li>Economic Activity</li>
+                        <li>Judicial Power</li>
+                        <li>Federalism</li>
+                        <li>Interstate Relations</li>
+                        <li>Federal Taxation</li>
+                        <li>Miscellaneous</li>
+                        <li>Private Action</li>
+                    </ol>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree" id="petitionerState_description">
+                    petitionerState
+                </button>
+              </h2>
+              <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="div_table">
+                        <table>
+                            <tr>
+                                <th>Online Code Book</th>
+                                <th>Spaeth Name</th>
+                                <th>Normalizations</th>
+                            </tr>
+                            <tr>
+                                <td>Issue Area</td>
+                                <td>VALUE</td>    
+                                <td>64 values</td>    
+                            </tr>
+                        </table>
+                    </div>
+                    <p>This variable identifies the state if the state or any one of the below is the petitioner. The exceptions are courts, judicial districts, or judges. If they are federal courts or federal judges, the "state" is always the United States. The same holds for other federal employees or officials.</p>
+                    <ul>
+                        <li>specified state board or department of education</li>
+                        <li>city, town, township, village, or borough government or governmental unit</li>
+                        <li>state commission, board, committee, or authority</li>
+                        <li>county government or county governmental unit</li>
+                        <li>state department or agency</li>
+                        <li>court or judicial district</li>
+                        <li>governmental employee or job applicant</li>
+                        <li>female governmental employee or job applicant</li>
+                        <li>minority governmental employee or job applicant</li>
+                        <li>minority female governmental employee or job applicant</li>
+                        <li>federal government corporation</li>
+                        <li>retired or former governmental employee</li>
+                        <li>U.S. House of Representatives interstate compact</li>
+                        <li>judge</li>
+                        <li>state legislature, house, or committee</li>
+                        <li>local governmental unit other than a county, city, town, township, village, or borough</li>
+                        <li>governmental official, or an official of an agency established under an interstate </li>compact
+                        <li>state or U.S. supreme court</li>
+                        <li>local school district or board of education</li>
+                        <li>U.S. Senate</li>
+                        <li>U.S. senator</li>
+                        <li>foreign nation or instrumentality</li>
+                        <li>state or local governmental taxpayer, or executor of the estate of</li>
+                        <li>state college or university</li>
+                    </ul>
+                    <h6 style="font-weight: bold;text-align: justify;">Values:</h6>
+                    <ol style="text-align: justify;">
+                        <li>Alabama</li>
+                        <li>Alaska</li>
+                        <li>American Samoa</li>
+                        <li>Arizona</li>
+                        <li>Arkansas</li>
+                        <li>California</li>
+                        <li>Colorado</li>
+                        <li>Connecticut</li>
+                        <li>Delaware</li>
+                        <li>District of Columbia</li>
+                        <li>Federated States of Micronesia</li>
+                        <li>Florida</li>
+                        <li>Georgia</li>
+                        <li>Guam</li>
+                        <li>Hawaii</li>
+                        <li>Idaho</li>
+                        <li>Illinois</li>
+                        <li>Indiana</li>
+                        <li>Iowa</li>
+                        <li>Kansas</li>
+                        <li>Kentucky</li>
+                        <li>Louisiana</li>
+                        <li>Maine</li>
+                        <li>Marshall Islands</li>
+                        <li>Maryland</li>
+                        <li>Massachusetts</li>
+                        <li>Michigan</li>
+                        <li>Minnesota</li>
+                        <li>Mississippi</li>
+                        <li>Missouri</li>
+                        <li>Montana</li>
+                        <li>Nebraska</li>
+                        <li>Nevada</li>
+                        <li>New Hampshire</li>
+                        <li>New Jersey</li>
+                        <li>New Mexico</li>
+                        <li>New York</li>
+                        <li>North Carolina</li>
+                        <li>North Dakota</li>
+                        <li>Northern Mariana Islands</li>
+                        <li>Ohio</li>
+                        <li>Oklahoma</li>
+                        <li>Oregon</li>
+                        <li>Palau</li>
+                        <li>Pennsylvania</li>
+                        <li>Puerto Rico</li>
+                        <li>Rhode Island</li>
+                        <li>South Carolina</li>
+                        <li>South Dakota</li>
+                        <li>Tennessee</li>
+                        <li>Texas</li>
+                        <li>Utah</li>
+                        <li>Vermont</li>
+                        <li>Virgin Islands</li>
+                        <li>Virginia</li>
+                        <li>Washington</li>
+                        <li>West Virginia</li>
+                        <li>Wisconsin</li>
+                        <li>Wyoming</li>
+                        <li>United States</li>
+                        <li>Interstate Compact</li>
+                        <li>Philippines</li>
+                        <li>Indian</li>
+                        <li>Dakota</li>
+                    </ol>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour" id="respondentState_description">
+                    respondentState
+                  </button>
+                </h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                      <div class="div_table">
+                          <table>
+                              <tr>
+                                  <th>Online Code Book</th>
+                                  <th>Spaeth Name</th>
+                                  <th>Normalizations</th>
+                              </tr>
+                              <tr>
+                                  <td>Respondent State</td>
+                                  <td>PARTY_2</td>    
+                                  <td>64 values</td>    
+                              </tr>
+                          </table>
+                      </div>
+                      <p>This variable identifies the state if the state or any one of the following is the respondent:</p>
+                      <ul>
+                        <li>specified state board or department of education</li>
+                        <li>city, town, township, village, or borough government or governmental unit</li>
+                        <li>state commission, board, committee, or authority</li>
+                        <li>county government or county governmental unit</li>
+                        <li>state department or agency</li>
+                        <li>court or judicial district</li>
+                        <li>governmental employee or job applicant</li>
+                        <li>female governmental employee or job applicant</li>
+                        <li>minority governmental employee or job applicant</li>
+                        <li>minority female governmental employee or job applicant</li>
+                        <li>retired or former governmental employee</li>
+                        <li>judge</li>
+                        <li>state legislature, house, or committee</li>
+                        <li>local governmental unit other than a county, city, town, township, village, or borough</li>
+                        <li>governmental official, or an official of an agency established under an interstate </li>compact
+                        <li>state or U.S. supreme court</li>
+                        <li>local school district or board of education</li>
+                        <li>state or local governmental taxpayer, or executor of the estate of</li>
+                        <li>state college or university</li>
+                      </ul>
+                      <h6 style="font-weight: bold;text-align: justify;">Values:</h6>
+                      <ol style="text-align: justify;">
+                        <li>Alabama</li>
+                        <li>Alaska</li>
+                        <li>American Samoa</li>
+                        <li>Arizona</li>
+                        <li>Arkansas</li>
+                        <li>California</li>
+                        <li>Colorado</li>
+                        <li>Connecticut</li>
+                        <li>Delaware</li>
+                        <li>District of Columbia</li>
+                        <li>Federated States of Micronesia</li>
+                        <li>Florida</li>
+                        <li>Georgia</li>
+                        <li>Guam</li>
+                        <li>Hawaii</li>
+                        <li>Idaho</li>
+                        <li>Illinois</li>
+                        <li>Indiana</li>
+                        <li>Iowa</li>
+                        <li>Kansas</li>
+                        <li>Kentucky</li>
+                        <li>Louisiana</li>
+                        <li>Maine</li>
+                        <li>Marshall Islands</li>
+                        <li>Maryland</li>
+                        <li>Massachusetts</li>
+                        <li>Michigan</li>
+                        <li>Minnesota</li>
+                        <li>Mississippi</li>
+                        <li>Missouri</li>
+                        <li>Montana</li>
+                        <li>Nebraska</li>
+                        <li>Nevada</li>
+                        <li>New Hampshire</li>
+                        <li>New Jersey</li>
+                        <li>New Mexico</li>
+                        <li>New York</li>
+                        <li>North Carolina</li>
+                        <li>North Dakota</li>
+                        <li>Northern Mariana Islands</li>
+                        <li>Ohio</li>
+                        <li>Oklahoma</li>
+                        <li>Oregon</li>
+                        <li>Palau</li>
+                        <li>Pennsylvania</li>
+                        <li>Puerto Rico</li>
+                        <li>Rhode Island</li>
+                        <li>South Carolina</li>
+                        <li>South Dakota</li>
+                        <li>Tennessee</li>
+                        <li>Texas</li>
+                        <li>Utah</li>
+                        <li>Vermont</li>
+                        <li>Virgin Islands</li>
+                        <li>Virginia</li>
+                        <li>Washington</li>
+                        <li>West Virginia</li>
+                        <li>Wisconsin</li>
+                        <li>Wyoming</li>
+                        <li>United States</li>
+                        <li>Interstate Compact</li>
+                        <li>Philippines</li>
+                        <li>Indian</li>
+                        <li>Dakota</li>
+                      </ol>
+                  </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive" id="jurisdiction_description">
+                jurisdiction
+                </button>
+            </h2>
+            <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="div_table">
+                        <table>
+                            <tr>
+                                <th>Online Code Book</th>
+                                <th>Spaeth Name</th>
+                                <th>Normalizations</th>
+                            </tr>
+                            <tr>
+                                <td>Manner in which the Court takes Jurisdiction</td>
+                                <td>JUR</td>    
+                                <td>14 values</td>    
+                            </tr>
+                        </table>
+                    </div>
+                    <p>The Court uses a variety of means whereby it undertakes to consider cases that it has been petitioned to review. These are listed below. The most important ones are the writ of certiorari, the writ of appeal, and for legacy cases the writ of error, appeal, and certification.</p>
+                    <p>
+                    A few notes are in order. First, there are handful of cases that fall into more than one category. Marbury v. Madison, 5 U.S. 137 (1803), for example, was an original jurisdiction and a mandamus case. We code these cases on the basis of the writ. So Marbury is a coded as mandamus, not original jurisdiction.</p>
+                    <p>
+                    Second, some legacy cases are "original" motions or requests for the Court to take jurisdiction but were heard or filed in another court. See, for example, Ex parte Matthew Addy S.S. & Commerce Corp., 256 U.S. 417 (1921), asking the Court to issue a writ of mandamus to a federal judge. Again, we do not code these as "original" jurisdiction cases but rather on the basis of the writ.</p>
+
+                    <h6 style="font-weight: bold;text-align: justify;">Values:</h6>
+                    <ol style="text-align: justify;">
+                    <li>cert</li>
+                    <li>appeal</li>
+                    <li>bail</li>
+                    <li>certification</li>
+                    <li>docketing fee</li>
+                    <li>rehearing or restored to calendar for reargument</li>
+                    <li>injunction</li>
+                    <li>mandamus</li>
+                    <li>original</li>
+                    <li>prohibition</li>
+                    <li>stay</li>
+                    <li>writ of error</li>
+                    <li>writ of habeas corpus</li>
+                    <li>unspecified, other</li>
+                    </ol>
+                </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix" id="caseOriginState_description">
+                caseOriginState
+                </button>
+            </h2>
+            <div id="flush-collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="div_table">
+                        <table>
+                            <tr>
+                                <th>Online Code Book</th>
+                                <th>Spaeth Name</th>
+                                <th>Normalizations</th>
+                            </tr>
+                            <tr>
+                                <td>Origin of Case State</td>
+                                <td>ORIGIN</td>    
+                                <td>64 values</td>    
+                            </tr>
+                        </table>
+                    </div>
+                    <p>If the case originated in a state court, this variable identifies the state. For more details, see the variable caseOrigin.</p>
+
+                    <h6 style="font-weight: bold;text-align: justify;">Values:</h6>
+                    <ol style="text-align: justify;">
+                    <li>Alabama</li>
+                    <li>Alaska</li>
+                    <li>American Samoa</li>
+                    <li>Arizona</li>
+                    <li>Arkansas</li>
+                    <li>California</li>
+                    <li>Colorado</li>
+                    <li>Connecticut</li>
+                    <li>Delaware</li>
+                    <li>District of Columbia</li>
+                    <li>Federated States of Micronesia</li>
+                    <li>Florida</li>
+                    <li>Georgia</li>
+                    <li>Guam</li>
+                    <li>Hawaii</li>
+                    <li>Idaho</li>
+                    <li>Illinois</li>
+                    <li>Indiana</li>
+                    <li>Iowa</li>
+                    <li>Kansas</li>
+                    <li>Kentucky</li>
+                    <li>Louisiana</li>
+                    <li>Maine</li>
+                    <li>Marshall Islands</li>
+                    <li>Maryland</li>
+                    <li>Massachusetts</li>
+                    <li>Michigan</li>
+                    <li>Minnesota</li>
+                    <li>Mississippi</li>
+                    <li>Missouri</li>
+                    <li>Montana</li>
+                    <li>Nebraska</li>
+                    <li>Nevada</li>
+                    <li>New Hampshire</li>
+                    <li>New Jersey</li>
+                    <li>New Mexico</li>
+                    <li>New York</li>
+                    <li>North Carolina</li>
+                    <li>North Dakota</li>
+                    <li>Northern Mariana Islands</li>
+                    <li>Ohio</li>
+                    <li>Oklahoma</li>
+                    <li>Oregon</li>
+                    <li>Palau</li>
+                    <li>Pennsylvania</li>
+                    <li>Puerto Rico</li>
+                    <li>Rhode Island</li>
+                    <li>South Carolina</li>
+                    <li>South Dakota</li>
+                    <li>Tennessee</li>
+                    <li>Texas</li>
+                    <li>Utah</li>
+                    <li>Vermont</li>
+                    <li>Virgin Islands</li>
+                    <li>Virginia</li>
+                    <li>Washington</li>
+                    <li>West Virginia</li>
+                    <li>Wisconsin</li>
+                    <li>Wyoming</li>
+                    <li>United States</li>
+                    <li>Interstate Compact</li>
+                    <li>Philippines</li>
+                    <li>Indian</li>
+                    <li>Dakota</li>
+                    </ol>
+                </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven" id="caseSourceState_description">
+                caseSourceState
+                </button>
+            </h2>
+            <div id="flush-collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="div_table">
+                        <table>
+                            <tr>
+                                <th>Online Code Book</th>
+                                <th>Spaeth Name</th>
+                                <th>Normalizations</th>
+                            </tr>
+                            <tr>
+                                <td>Case Source State</td>
+                                <td>SOURCE</td>    
+                                <td>64 values</td>    
+                            </tr>
+                        </table>
+                    </div>
+                    <p>If the source of the case (i.e., the court whose decision the Supreme Court reviewed) is a state court, this variable identifies the state. See also Source of Case (caseSource).</p>
+
+                    <h6 style="font-weight: bold;text-align: justify;">Values:</h6>
+                    <ol style="text-align: justify;">
+                    <li>Alabama</li>
+                    <li>Alaska</li>
+                    <li>American Samoa</li>
+                    <li>Arizona</li>
+                    <li>Arkansas</li>
+                    <li>California</li>
+                    <li>Colorado</li>
+                    <li>Connecticut</li>
+                    <li>Delaware</li>
+                    <li>District of Columbia</li>
+                    <li>Federated States of Micronesia</li>
+                    <li>Florida</li>
+                    <li>Georgia</li>
+                    <li>Guam</li>
+                    <li>Hawaii</li>
+                    <li>Idaho</li>
+                    <li>Illinois</li>
+                    <li>Indiana</li>
+                    <li>Iowa</li>
+                    <li>Kansas</li>
+                    <li>Kentucky</li>
+                    <li>Louisiana</li>
+                    <li>Maine</li>
+                    <li>Marshall Islands</li>
+                    <li>Maryland</li>
+                    <li>Massachusetts</li>
+                    <li>Michigan</li>
+                    <li>Minnesota</li>
+                    <li>Mississippi</li>
+                    <li>Missouri</li>
+                    <li>Montana</li>
+                    <li>Nebraska</li>
+                    <li>Nevada</li>
+                    <li>New Hampshire</li>
+                    <li>New Jersey</li>
+                    <li>New Mexico</li>
+                    <li>New York</li>
+                    <li>North Carolina</li>
+                    <li>North Dakota</li>
+                    <li>Northern Mariana Islands</li>
+                    <li>Ohio</li>
+                    <li>Oklahoma</li>
+                    <li>Oregon</li>
+                    <li>Palau</li>
+                    <li>Pennsylvania</li>
+                    <li>Puerto Rico</li>
+                    <li>Rhode Island</li>
+                    <li>South Carolina</li>
+                    <li>South Dakota</li>
+                    <li>Tennessee</li>
+                    <li>Texas</li>
+                    <li>Utah</li>
+                    <li>Vermont</li>
+                    <li>Virgin Islands</li>
+                    <li>Virginia</li>
+                    <li>Washington</li>
+                    <li>West Virginia</li>
+                    <li>Wisconsin</li>
+                    <li>Wyoming</li>
+                    <li>United States</li>
+                    <li>Interstate Compact</li>
+                    <li>Philippines</li>
+                    <li>Indian</li>
+                    <li>Dakota</li>
+                    </ol>
+                </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight" id="certReason_description">
+                certReason
+                </button>
+            </h2>
+            <div id="flush-collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="div_table">
+                        <table>
+                            <tr>
+                                <th>Online Code Book</th>
+                                <th>Spaeth Name</th>
+                                <th>Normalizations</th>
+                            </tr>
+                            <tr>
+                                <td>Reason for Granting Cert</td>
+                                <td>CERT</td>    
+                                <td>13 values</td>    
+                            </tr>
+                        </table>
+                    </div>
+                    <p>This variable provides the reason, if any, that the Court gives for granting the petition for certiorari. If the case did not arise on certiorari, this variable will be so coded even if the Court provides a reason why it agreed to hear the case. The Court, however, rarely provides a reason for taking jurisdiction by writs other than certiorari.</p>
+
+                    <h6 style="font-weight: bold;text-align: justify;">Values:</h6>
+                    <ol style="text-align: justify;">
+                    <li>case did not arise on cert or cert not granted</li>
+                    <li>federal court conflict</li>
+                    <li>federal court conflict and to resolve important or significant question</li>
+                    <li>putative conflict</li>
+                    <li>conflict between federal court and state court</li>
+                    <li>state court conflict</li>
+                    <li>federal court confusion or uncertainty</li>
+                    <li>state court confusion or uncertainty</li>
+                    <li>federal court and state court confusion or uncertainty</li>
+                    <li>to resolve important or significant question</li>
+                    <li>to resolve question presented</li>
+                    <li>no reason given</li>
+                    <li>other reason</li>
+                    </ol>
+                </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine" id="lcDisposition_description">
+                lcDisposition
+                </button>
+            </h2>
+            <div id="flush-collapseNine" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="div_table">
+                        <table>
+                            <tr>
+                                <th>Online Code Book</th>
+                                <th>Spaeth Name</th>
+                                <th>Normalizations</th>
+                            </tr>
+                            <tr>
+                                <td>Lower Court Disposition</td>
+                                <td>LODIS</td>    
+                                <td>12 values</td>    
+                            </tr>
+                        </table>
+                    </div>
+                    <p>This variable specifies the treatment the court whose decision the Supreme Court reviewed accorded the decision of the court it reviewed; e.g., whether the court below the Supreme Court---typically a federal court of appeals or a state supreme court---affirmed, reversed, remanded, etc. the decision of the court it reviewed---typically a trial court.</p>
+                    <p>
+                    lcDisposition will not contain an entry if the decision the Supreme Court reviewed is that of a trial court or if the case arose under the Supreme Court's original jurisdiction (see the jurisdiction variable). The former occurs frequently in the legacy data.</p>
+                    <p>
+                    The decision rules governing this information follow:</p>
+                    <ol style="text-align: justify;">
+                        <li> We adhere to the language used in the "holding" in the summary of the case on the title page or prior to Part I of the Court's opinion. Exceptions to the literal language are the following:</li>
+
+                        <li> Where the Court overrules the lower court, we treat this a petition or motion granted.</li>
+                        
+                        <li> Where the court whose decision the Supreme Court is reviewing refuses to enforce or enjoins the decision of the court, tribunal, or agency which it reviewed, we treat this as reversed.</li>
+                        
+                        <li> Where the court whose decision the Supreme Court is reviewing enforces the decision of the court, tribunal, or agency which it reviewed, we treat this as affirmed.</li>
+                        
+                        <li> Where the court whose decision the Supreme Court is reviewing sets aside the decision of the court, tribunal, or agency which it reviewed, we treat this as vacated; if the decision is set aside and remanded, we treat it as vacated and remanded.</li>
+                    </ol>
+                    <h6 style="font-weight: bold;text-align: justify;">Values:</h6>
+                    <ol style="text-align: justify;">
+                        <li>stay, petition, or motion granted</li>
+                        <li>affirmed</li>
+                        <li>reversed</li>
+                        <li>reversed and remanded</li>
+                        <li>vacated and remanded</li>
+                        <li>affirmed and reversed (or vacated) in part</li>
+                        <li>affirmed and reversed (or vacated) in part and remanded</li>
+                        <li>vacated</li>
+                        <li>petition denied or appeal dismissed</li>
+                        <li>modify</li>
+                        <li>remand</li>
+                        <li>unusual disposition</li>
+                    </ol>
+                </div>
+            </div>
+            </div>
+        </div>
+        <h4 style="padding-top: 5%;">Variable to predict in this model</h4>
+        <div class="accordion accordion-flush" id="accordionFlushExample" style="padding-left: 10%;padding-right: 10%;">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTen" aria-expanded="false" aria-controls="flush-collapseTen" id="decisionDirection_description">
+                    decisionDirection
+                </button>
+              </h2>
+              <div id="flush-collapseTen" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body" style="text-align: center;">
+                    <div class="div_table">
+                        <table>
+                            <tr>
+                                <th>Online Code Book</th>
+                                <th>Spaeth Name</th>
+                                <th>Normalizations</th>
+                            </tr>
+                            <tr>
+                                <td>Decision Direction</td>
+                                <td>DIR</td>    
+                                <td>3 values</td>    
+                            </tr>
+                        </table>
+                    </div>
+                        <p>
+                        In order to determine whether the Court supports or opposes the issue to which the case pertains, this variable codes the ideological "direction" of the decision.</p>
+                        <p>    
+                        Specification of direction comports with conventional usage for the most part except for the interstate relations, private law, and the miscellaneous issues. "Unspecifiable" has been entered either because the issue does not lend itself to a liberal or conservative description (e.g., a boundary dispute between two states, real property, wills and estates), or because no convention exists as to which is the liberal side and which is the conservative side (e.g., the legislative veto). This variable will also contain "unspecifiable" where one state sues another under the original jurisdiction of the Supreme Court and where parties or issue cannot be determined because of a tied vote or lack of information.</p>
+                        <p>
+                        Note especially that the direction (pro- or anti-liability)of the three liability variables (80060, 80070, and 80080) depend on the disposition the Court made of the case, and which party won or lost. For 80070 -- non-governmental liability - a liberal vote and case decision support the injured person, organiation, or thing (res). For 80060 - governmental liability - a vote and case outcome that supports government is invariably defined as liberal. Note that if the injured entity is the other party in the case, said party loses, by definition. On the other hand, of course, if the injured entity wins, then of necessity the government loses. Where liability is assigned to both plaintiff and respondent, direction is considered indetermnable.</p>
+                        <p>
+                        For purposes of the governmental liability issue, government includes state and local governmental entities, foreign governments, and governmentally owned property. In the rare instance of a conflict between governmental body and an injured person, organiation, or thing the governmental outcome controls directionality. Most such conflicts, however, locate in other issues; e.g., attorneys' and governemtnal employees' compensation or fees, and military personnel and veterans.</p>
+                        <p>
+                        It bears emphasizing that the entry for directionality is determined by reference to the issue variable. If you are using the Case Centered Dataset organized by split votes, it is entirely possible for a citation to relate to a second issue whose direction is opposite that of the first issue. For example, in Air Pollution Variance Board of the State of Colorado v. Western Alfalfa Corporation, 416 U.S. 861 (1974), the Court decided that the Fourth Amendment was not violated by a health inspector's warrantless entry onto the property of a business to inspect smoke pollution. The first issue (search and seizure) is coded conservative; the second issue (natural resources) is coded liberal.</p>
+                        <h6 style="font-weight: bold;text-align: justify;">Values:</h6>
+                        <ol style="text-align: justify;">
+                            <li>conervative</li>
+                            <li>liberal</li>
+                            <li>unspecified</li>
+                        </ol>
+                    </div>
+            </div>
+        </div>
+        <p style="text-align: justify;">
+
+        </p>
+    </article>
+</section>
+{% endblock alternative_p %}

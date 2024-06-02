@@ -1,0 +1,87 @@
+<!--
+    SCDB-ML-app is a deployed app to analyze the U.S. Supreme Court Database
+    Copyright (C) 2024  HERMES A. V. URQUIJO
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+{% extends 'base.html' %}
+{% block page_title %}
+    Prediction
+{% endblock page_title %}
+{% block alternative_h1 %}
+    <h1>Result of prediction</h1>
+{% endblock alternative_h1 %}
+{% block alternative_p %}
+    <p style="text-align: center;" id="accuracy_message" class="{{accuracy_visible}}" >Accuracy of {{accuracy_var}}</p>
+{% endblock alternative_p %}
+{% block alternative_body %}
+<form method="post" id="myForm_save">
+    <table class="table_p">
+        <tr class="tr_p">
+            <th class="th_p">Variable</th>
+            <th class="th_p">Values</th>
+        </tr>
+        <tr class="tr_p2">
+            {% if decisionDirection==2 %}
+            <td class="td_p2">Predicted Decision Direction (2.0 -> liberal)</td>
+            {% else %}
+            <td class="td_p2">Predicted Decision Direction (1.0 -> conservative)</td>
+            {% endif %}
+            <td class="td_p2">{{decisionDirection}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Vote ID</td>
+            <td class="td_p">{{voteId}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Issue Area</td>
+            <td class="td_p">{{issueArea}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Petitioner State</td>
+            <td class="td_p">{{petitionerState}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Respondent State</td>
+            <td class="td_p">{{respondentState}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Jurisdiction</td>
+            <td class="td_p">{{jurisdiction}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Case Origin State</td>
+            <td class="td_p">{{caseOriginState}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Case Source State</td>
+            <td class="td_p">{{caseSourceState}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Reason for Granting Cert</td>
+            <td class="td_p">{{certReason}}</td>
+        </tr>
+        <tr class="tr_p">
+            <td class="td_p">Lower Court Disposition</td>
+            <td class="td_p">{{lcDisposition}}</td>
+        </tr>
+    </table>
+    <div style="padding-top: 2.5%;">
+        <button type="submit" class="btn btn-primary" id="saveButton" >Download</button>
+    </div>
+    <div id="error-message_saving" class="alert alert-danger mt-2" role="alert" style="display: none;">
+        Ocorreu um erro ao enviar o formulário. Tente novamente.
+    </div>
+</form>
+{% endblock alternative_body %}

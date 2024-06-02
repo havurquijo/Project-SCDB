@@ -1,0 +1,58 @@
+<!--
+    SCDB-ML-app is a deployed app to analyze the U.S. Supreme Court Database
+    Copyright (C) 2024  HERMES A. V. URQUIJO
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+{% extends 'base.html' %}
+{% block page_title %}
+    Training
+{% endblock page_title %}
+{% block alternative_h1 %}
+    <h1>Train the machine</h1>
+{% endblock alternative_h1 %}
+{% block alternative_p %}
+{% endblock alternative_p %}
+{% block alternative_body %} 
+    <div class="form_predict">
+        <form id="myForm" method="POST">
+            <div class="mb-3">
+                <label for="max_depth" class="form-label">Max depth</label>
+                <input type="text" class="form-control" name="max_depth" required>
+            </div>
+            <div class="mb-3">
+                <label for="test_size" class="form-label">Test size</label>
+                <input type="text" class="form-control" name="test_size" required>
+            </div>
+            <div class="mb-3">
+                <label for="random_states" class="form-label">Random States</label>
+                <input type="text" class="form-control" name="random_states" required>
+            </div>
+            <!--
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div>
+            -->
+            <button type="submit" class="btn btn-primary">Train</button>
+        </form>
+        <div class="d-flex align-items-center m-2 invisible" id="loading">
+            <strong role="status">Training...</strong>
+            <div class="spinner-border ms-auto" aria-hidden="true"></div>
+        </div>
+        <div id="error-message" class="alert alert-danger mt-2" role="alert" style="display: none;">
+            Ocorreu um erro ao enviar o formulário. Tente novamente.
+        </div>
+    </div>
+{% endblock alternative_body %}
