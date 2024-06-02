@@ -4,7 +4,7 @@ setup(
   packages=find_packages(),   # Chose the same as "name"
   version = '1.0.0',      # Start with a small number and increase it with every change you make
   license='AGPL 3.0',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
-  description = 'A MACHINE LEARNING ANALIZER DEPLOYED INTO A WEBPAGE',   # Give a short description about your library
+  description = 'A MACHINE LEARNING ANALYZER DEPLOYED INTO A WEBPAGE',   # Give a short description about your library
   author = 'HERMES A V URQUIJO',                   # Type in your name
   author_email = 'hvurquijo@gmail.com',      # Type in your E-Mail
   url = 'https://github.com/havurquijo/Project-SCDB',   # Provide either the link to your github or to your website
