@@ -1,4 +1,6 @@
+LICENSE.txt
 README.md
+setup.cfg
 setup.py
 SCDB_ML_app.egg-info/PKG-INFO
 SCDB_ML_app.egg-info/SOURCES.txt
