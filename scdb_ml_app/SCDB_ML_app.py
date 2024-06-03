@@ -16,16 +16,19 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from flask import Flask,redirect,url_for,render_template,request,jsonify,send_file # type: ignore
+#to use relative paths the main program must be initiated from the parent folder as a module
 from .mine_decision_tree import mine_decision_tree as mine_tree_class
 from .predict_decision_tree import predict_decision_tree as predict_tree_class
 from .train_decision_tree import train_decision_tree as train_tree_class
 import time
-from os import remove
-from os.path import exists
+from os import remove, getcwd
+from os.path import exists,join
 from numpy import savetxt, loadtxt
 from pandas import DataFrame
+from pathlib import Path
 
 app = Flask(__name__)
+current_directory = getcwd()
 
 @app.route("/")#url for routing
 #This function basically writes the html page
@@ -47,8 +50,8 @@ def admin():
 
 @app.route("/predict_tree", methods=["POST","GET"])
 def predict_tree():
-    if exists("models/accuracy_tree.txt"):
-        accuracy = loadtxt("models/accuracy_tree.txt")
+    if exists(Path(join(current_directory,"models\\accuracy_tree.txt"))):
+        accuracy = loadtxt(Path(join(current_directory,"models\\accuracy_tree.txt")))
         visible=True
     else:
         visible=False
@@ -63,23 +66,30 @@ def predict_tree():
         caseSourceState = float(request.form["caseSourceState"])
         certReason = float(request.form["certReason"])
         lcDisposition = float(request.form["lcDisposition"])
-        predict_tree_ = predict_tree_class()  
-        predict_tree_.set_predictors([voteId,issueArea,petitionerState,respondentState,jurisdiction,caseOriginState,caseSourceState,certReason,lcDisposition])      
-        decisionDirection=predict_tree_.predict_self()
-        return redirect(url_for("predicted_tree",
-                                accuracy_visible="p_shown", 
-                                accuracy_var=f"{accuracy*100:.1f}"+"%",
-                                decisionDirection=decisionDirection,#url_for() posts a float with 1 decimal place, don't know why
-                                voteId = voteId,
-                                issueArea = issueArea,
-                                petitionerState = petitionerState,
-                                respondentState = respondentState,
-                                jurisdiction = jurisdiction,
-                                caseOriginState = caseOriginState,
-                                caseSourceState = caseSourceState,
-                                certReason = certReason,
-                                lcDisposition = lcDisposition
-                               ))
+        try:
+            predict_tree_ = predict_tree_class()  
+            predict_tree_.set_predictors([voteId,issueArea,petitionerState,respondentState,jurisdiction,caseOriginState,caseSourceState,certReason,lcDisposition])      
+            decisionDirection=predict_tree_.predict_self()
+            return jsonify({'status':'success',
+                            'redirect': url_for("predicted_tree",
+                                        accuracy_visible="p_shown", 
+                                        accuracy_var=f"{accuracy*100:.1f}"+"%",
+                                        decisionDirection=decisionDirection,#url_for() posts a float with 1 decimal place, don't know why
+                                        voteId = voteId,
+                                        issueArea = issueArea,
+                                        petitionerState = petitionerState,
+                                        respondentState = respondentState,
+                                        jurisdiction = jurisdiction,
+                                        caseOriginState = caseOriginState,
+                                        caseSourceState = caseSourceState,
+                                        certReason = certReason,
+                                        lcDisposition = lcDisposition
+                                )})
+        except FileNotFoundError:
+            return jsonify({'status':'fileNotFound',
+                            'message':'Model not found, you must train the machine first!',
+                            'redirect':url_for('train_tree')
+                            })
     if visible:
         return render_template("predict_tree.html",accuracy_visible="p_shown", accuracy_var=f"{accuracy*100:.1f}"+"%",decisionDirection="= Not calculated yet")
     else:
@@ -106,7 +116,7 @@ def predicted_tree():
         values = {key:value for key, value in values_.items() if key!='accuracy_visible' and key!='decisionDirection'}
         values['decisionDirection']=values_['decisionDirection']
         df = DataFrame([values])  # Wrap new_values in a list to create a DataFrame with one row
-        filename = "predicted_decisionDirection_DTreeC.csv"
+        filename = Path(join(current_directory,"models\\predicted_decisionDirection_DTreeC.csv"))
         try:
             df.to_csv(filename, sep=';', index=False)
         except Exception as e:
@@ -150,7 +160,7 @@ def train_tree():
         random_states = int(request.form["random_states"])
         train_tree_=train_tree_class()
         accuracy = train_tree_.train(max_depth=max_depth,test_size=test_size/100.0,random_state=random_states)
-        savetxt("models/accuracy_tree.txt",[accuracy])
+        savetxt(Path(join(current_directory,"models\\accuracy_tree.txt")),[accuracy])
         # Simulate a long-running process
         time.sleep(2)
         #passos para ver se o arquivo foi baixado 
@@ -164,8 +174,8 @@ def upload_file():
     return
 
 def remove_cache_filecsv():
-    if exists('predicted_decisionDirection_DTreeC.csv'):
-        remove('predicted_decisionDirection_DTreeC.csv')
+    if exists(Path(join(current_directory,'models\\predicted_decisionDirection_DTreeC.csv'))):
+        remove(Path(join(current_directory,'models\\predicted_decisionDirection_DTreeC.csv')))
         return True
     return False
 

@@ -54,12 +54,3 @@ document.addEventListener('DOMContentLoaded', function() {
           });
     });
 });
-if (data.status === 'success') {
-    // Redirecionar para a página de resultado
-    const toast_trained_tree = document.getElementById('liveToast');
-    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_trained_tree);
-    //toastBootstrap.body(data.message)
-    toastBootstrap.show()
-} else {
-    throw new Error('Erro no envio do formulário');
-};

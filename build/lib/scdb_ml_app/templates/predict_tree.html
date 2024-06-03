@@ -25,7 +25,7 @@
     <p style="text-align: center;" id="accuracy_message" class="{{accuracy_visible}}" >Accuracy of {{accuracy_var}}</p>
 {% endblock alternative_p %}
 {% block alternative_body %} 
-    <form class="form_predict" method="post">
+    <form class="form_predict" method="post" id="formPredict">
         <div class="mb-3">
             <label class="form-label"> <a class="a_notlink" href="{{url_for("homePage")}}#voteId_description">Vote ID</a></label>
             <input type="text" class="form-control" name="voteID">
@@ -68,12 +68,9 @@
         <div class="mb-3">
             <label class="form-label" style="color: rgb(248, 40, 40);"><a class="a_notlink" href="{{url_for("homePage")}}#decisionDirection_description">Decision Direction</a> {{decisionDirection}}</label>
         </div>
-        <!--
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-        -->
         <button type="submit" class="btn btn-primary">Predict</button>
+        <div id="error-message" class="alert alert-danger mt-2" role="alert" style="display: none;">
+            Ocorreu um erro ao enviar o formulário. Tente novamente.
+        </div>
     </form>
 {% endblock alternative_body %}

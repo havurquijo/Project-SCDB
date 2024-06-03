@@ -18,16 +18,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import pickle
 from sklearn.tree import DecisionTreeClassifier
 import numpy as np
+from pathlib import Path
+from os import getcwd
+from os.path import join
 
 class predict_decision_tree:
     # Attributes
     model = DecisionTreeClassifier()
     predictors_names = ['voteId', 'issueArea', 'petitionerState', 'respondentState', 'jurisdiction', 'caseOriginState', 'caseSourceState', 'certReason', 'lcDisposition']
     predictors_values = []
+    current_directory=getcwd()
 
     def __init__(self) -> None:
         try:
-            with open("models/decision_tree_model.pkl", "rb") as file:
+            with open(Path(join(self.current_directory,"models\\decision_tree_model.pkl")), "rb") as file:
                 self.model = pickle.load(file)
         except FileNotFoundError:
             raise FileNotFoundError("The file decision_tree_model.pkl was not found")

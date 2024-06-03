@@ -23,13 +23,10 @@
     <h1>Mine the data</h1>
 {% endblock alternative_h1 %}
 {% block alternative_p %}
+<p style="text-align: center;">Press the button to download the file and mine the data</p>
 {% endblock alternative_p %}
 {% block alternative_body %} 
     <form class="form_predict" method="post" id="myForm_mining">
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
         <button type="submit" class="btn btn-primary">Download</button>
         <div class="d-flex align-items-center m-2 invisible" id="loading">
             <strong role="status">Mining and preprocessing...</strong>

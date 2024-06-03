@@ -17,19 +17,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from pickle import dump
 from pandas import  DataFrame, read_csv
-from os.path import exists
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, accuracy_score
-from sklearn.tree import DecisionTreeClassifier,plot_tree
+from sklearn.tree import DecisionTreeClassifier
+from pathlib import Path
+from os import getcwd
+from os.path import join
 
 class train_decision_tree:
     #atributtes
     previsors=[]
     toPredict=[]
     base=DataFrame()
+    current_directory=getcwd()
 
     def __init__(self) -> None:
-            address = "models/preprocessed_decision_tree.csv"
+            address = Path(join(self.current_directory,"models\\preprocessed_decision_tree.csv"))
             self.base = read_csv(address,sep=';')
             self.previsors = self.base.iloc[:,0:9].values
             self.toPredict = self.base.iloc[:,9].values    
@@ -52,7 +55,7 @@ class train_decision_tree:
         print("Accuracy in tree model was:")
         print(f"{accuracy*100:.1f}%")
         #saving model
-        self.save_model(tree_model_tree,"models/decision_tree_model.pkl")
+        self.save_model(tree_model_tree,Path(join(self.current_directory,"models\\decision_tree_model.pkl")))
         return accuracy
 
     def save_model(self,model,model_pkl_file)->None:

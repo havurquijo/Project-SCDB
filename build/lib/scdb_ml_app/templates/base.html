@@ -128,6 +128,19 @@
           </div>
         </div>
       </div>
+      <div class="toast-container position-fixed top-30 end-0 p-3">
+        <div id="liveToast_FileNotFound" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <img src="{{url_for('static',filename='icon/error.png')}}" class="rounded me-2" alt="..." width="8%">
+            <strong class="me-auto" style="color: red;font-weight: bolder;">Error Notification</strong>
+            <small>Too bad</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            File not Found!
+          </div>
+        </div>
+      </div>
       <!--End of toast definition-->
       <section>
         {% block alternative_h1 %}
@@ -178,7 +191,7 @@
           </div>
         </div>
       </footer>
-    <script src="{{url_for('static',filename='js/popper_initializations.js')}}"></script>
+    <script src="{{url_for('static',filename='js/to_train_tree.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/mining_tree.js') }}"></script>
