@@ -69,7 +69,7 @@ def predict_tree():
         return redirect(url_for("predicted_tree",
                                 accuracy_visible="p_shown", 
                                 accuracy_var=f"{accuracy*100:.1f}"+"%",
-                                decisionDirection=decisionDirection,
+                                decisionDirection=decisionDirection,#url_for() posts a float with 1 decimal place, don't know why
                                 voteId = voteId,
                                 issueArea = issueArea,
                                 petitionerState = petitionerState,
@@ -91,16 +91,16 @@ def predicted_tree():
     values = request.args.to_dict()
     accuracy_visible = values.get('accuracy_visible', '')
     accuracy_var = values.get('accuracy_var', '')
-    voteId = values.get("voteId", '')
-    issueArea = values.get("issueArea", '')
-    petitionerState = values.get("petitionerState", '')
-    respondentState = values.get("respondentState", '')
-    jurisdiction = values.get("jurisdiction", '')
-    caseOriginState = values.get("caseOriginState", '')
-    caseSourceState = values.get("caseSourceState", '')
-    certReason = values.get("certReason", '')
-    lcDisposition = values.get("lcDisposition", '')
-    decisionDirection = values.get("decisionDirection", '')
+    voteId = float(values.get("voteId", ''))
+    issueArea = float(values.get("issueArea", ''))
+    petitionerState = float(values.get("petitionerState", ''))
+    respondentState = float(values.get("respondentState", ''))
+    jurisdiction = float(values.get("jurisdiction", ''))
+    caseOriginState = float(values.get("caseOriginState", ''))
+    caseSourceState = float(values.get("caseSourceState", ''))
+    certReason = float(values.get("certReason", ''))
+    lcDisposition = float(values.get("lcDisposition", ''))
+    decisionDirection = float(values.get("decisionDirection", ''))
     if request.method=="POST":
         values_ = request.values.to_dict()
         values = {key:value for key, value in values_.items() if key!='accuracy_visible' and key!='decisionDirection'}
