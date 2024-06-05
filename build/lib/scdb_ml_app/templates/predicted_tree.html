@@ -20,7 +20,11 @@
     Prediction
 {% endblock page_title %}
 {% block alternative_h1 %}
-    <h1>Result of prediction</h1>
+    {% if model =="Naive_Bayes" %}
+    <h1>Result of prediction for Naive Bayes model</h1>
+    {% elif model == "Decision_Tree"%}
+    <h1>Result of prediction Decision Tree Classifier model</h1>
+    {% endif %}    
 {% endblock alternative_h1 %}
 {% block alternative_p %}
     <p style="text-align: center;" id="accuracy_message" class="{{accuracy_visible}}" >Accuracy of {{accuracy_var}}</p>

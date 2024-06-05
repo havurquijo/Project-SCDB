@@ -8,7 +8,7 @@ footer, header, hgroup, menu, nav {
 }*/
 body {
     text-align: center;
-	line-height: 1;
+	  line-height: 1;
     font-family: "Open Sans", Helvetica, Arial, "sans-serif";    
     background-color: #efede7;
 }
@@ -141,4 +141,10 @@ table, th, td {
   .a_notlink:hover{
     filter: brightness(120%);
     cursor: help;
+  }
+
+  .div-container-ts{
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }

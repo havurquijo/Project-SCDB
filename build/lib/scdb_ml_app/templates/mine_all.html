@@ -1,0 +1,39 @@
+<!--
+    SCDB-ML-app is a deployed app to analyze the U.S. Supreme Court Database
+    Copyright (C) 2024  HERMES A. V. URQUIJO
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+{% extends 'base.html' %}
+{% block page_title %}
+    Mining
+{% endblock page_title %}
+{% block alternative_h1 %}
+    <h1>Mine the data</h1>
+{% endblock alternative_h1 %}
+{% block alternative_p %}
+<p style="text-align: center;">Press the button to download the file and mine the data</p>
+{% endblock alternative_p %}
+{% block alternative_body %} 
+    <form class="form_predict" method="post" id="myForm_mining">
+        <button type="submit" class="btn btn-primary">Download</button>
+        <div class="d-flex align-items-center m-2 invisible" id="loading">
+            <strong role="status">Mining and preprocessing...</strong>
+            <div class="spinner-border ms-auto" aria-hidden="true"></div>
+        </div>
+        <div id="error-message" class="alert alert-danger mt-2" role="alert" style="display: none;">
+            Ocorreu um erro ao enviar o formulário. Tente novamente.
+        </div>
+    </form>
+{% endblock alternative_body %}

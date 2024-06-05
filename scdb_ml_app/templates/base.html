@@ -42,8 +42,8 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Train machine</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{url_for("train_tree")}}">Decision Tree</a></li>
-                  <li><a class="dropdown-item" href="#">Naive Bayes</a></li>
+                  <li><a class="dropdown-item" href="{{url_for("train_base",model='Decision_Tree')}}">Decision Tree</a></li>
+                  <li><a class="dropdown-item" href="{{url_for("train_base",model='Naive_Bayes')}}">Naive Bayes</a></li>
                   <li><a class="dropdown-item" href="#">Deep Learning</a></li>
                 </ul>
               </li>
@@ -52,8 +52,8 @@
                   Predict
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{url_for("predict_tree")}}">Decision Tree</a></li>
-                  <li><a class="dropdown-item" href="#">Naive Bayes</a></li>
+                  <li><a class="dropdown-item" href="{{url_for("predict_base",model='Decision_Tree')}}">Decision Tree</a></li>
+                  <li><a class="dropdown-item" href="{{url_for("predict_base",model='Naive_Bayes')}}">Naive Bayes</a></li>
                   <li><a class="dropdown-item" href="#">Deep Learning</a></li>
                   <!--<li><hr class="dropdown-divider"></li>-->
                 </ul>
@@ -63,7 +63,8 @@
                   Others
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Temporal series</a></li>
+                  <li><a class="dropdown-item" href="{{url_for("temporal_series")}}">Temporal series</a></li>
+                  <li><a class="dropdown-item" href="{{url_for("mine_all")}}">Preprocess all</a></li>
                   <!--<li><hr class="dropdown-divider"></li>-->
                 </ul>
               </li>
@@ -159,7 +160,7 @@
               <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
                 <h5 class="text-uppercase">Project SCDB</h5>
                 <p style="color: antiquewhite; max-width: 80%;" >
-                  We analise the U.S. Supreme Court Database using some machine learning algorithms (MLA). Particularly we found a 96% accuracy rate in the predictions of the Decision Direction variable when used a Decision Tree Classifier MLA on a 9 variables set which don't depend on the Decision Direction.
+                  We analyze the U.S. Supreme Court Database using some machine learning algorithms (MLA). Particularly we found a 96% accuracy rate in the predictions of the Decision Direction variable when used a Decision Tree Classifier MLA on a 9 variables set which don't depend on the Decision Direction.
                 </p>
               </div>
     
@@ -191,11 +192,11 @@
           </div>
         </div>
       </footer>
-    <script src="{{url_for('static',filename='js/to_train_tree.js')}}"></script>
+    <script src="{{url_for('static',filename='js/create_model.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='js/mining_tree.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/training_tree.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mining_all.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/training_all.js') }}"></script>
     <!--<script src="{{url_for('static',filename='js/downloading_tree.js')}}"></script>-->
     <!--
       <script src="{{ url_for('static', filename='js/predict_tree.js') }}"></script>

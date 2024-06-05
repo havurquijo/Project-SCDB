@@ -31,7 +31,7 @@ class predict_decision_tree:
 
     def __init__(self) -> None:
         try:
-            with open(Path(join(self.current_directory,"models\\decision_tree_model.pkl")), "rb") as file:
+            with open(Path(join(self.current_directory,"scdb_ml_app\\models\\decision_tree_model.pkl")), "rb") as file:
                 self.model = pickle.load(file)
         except FileNotFoundError:
             raise FileNotFoundError("The file decision_tree_model.pkl was not found")

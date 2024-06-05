@@ -1,0 +1,76 @@
+<!--
+    SCDB-ML-app is a deployed app to analyze the U.S. Supreme Court Database
+    Copyright (C) 2024  HERMES A. V. URQUIJO
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->{% extends 'base.html' %}
+{% block page_title %}
+    Prediction
+{% endblock page_title %}
+{% block alternative_h1 %}
+    <h1>Make a prediction for the {{modelName}} model</h1>
+{% endblock alternative_h1 %}
+{% block alternative_p %}
+    <p style="text-align: center;" id="accuracy_message" class="{{accuracy_visible}}" >Accuracy of {{accuracy_var}}</p>
+{% endblock alternative_p %}
+{% block alternative_body %} 
+    <form class="form_predict" method="post" id="formPredict">
+        <div class="mb-3">
+            <label class="form-label"> <a class="a_notlink" href="{{url_for("homePage")}}#voteId_description">Vote ID</a></label>
+            <input type="text" class="form-control" name="voteID" placeholder="SCDB Vote ID from 1-9">
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><a class="a_notlink" href="{{url_for("homePage")}}#issueArea_description">Issue Area</a></label>
+            <input type="text" class="form-control" name="issueArea" placeholder="Issue Area from 1-14">
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><a class="a_notlink" href="{{url_for("homePage")}}#petitionerState_description">Petitioner State</a></label>
+            <input type="text" class="form-control" name="petitionerState" placeholder="Petitioner state from 1-64">
+            
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><a class="a_notlink" href="{{url_for("homePage")}}#respondentState_description">Respondent State</a></label>
+            <input type="text" class="form-control" name="respondentState" placeholder="Respondent State from 1-64">
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><a class="a_notlink" href="{{url_for("homePage")}}#jurisdiction_description">Jurisdiction</a></label>
+            <input type="text" class="form-control" name="jurisdiction" placeholder="Manner in which the Court takes Jurisdiction from 1-14">
+            
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><a class="a_notlink" href="{{url_for("homePage")}}#caseOriginState_description">Case Origin State</a></label>
+            <input type="text" class="form-control" name="caseOriginState" placeholder="Origin of Case State from 1-64">
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><a class="a_notlink" href="{{url_for("homePage")}}#caseSourceState_description">Case Source State</a></label>
+            <input type="text" class="form-control" name="caseSourceState" placeholder="Case Source State from 1-64">
+            
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><a class="a_notlink" href="{{url_for("homePage")}}#cerReason_description">Reason for Granting Cert</a></label>
+            <input type="text" class="form-control" name="certReason" placeholder="Reason for Granting Certification from 1-13">
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><a class="a_notlink" href="{{url_for("homePage")}}#lcDisposition_description">Lower Court Disposition</a></label>
+            <input type="text" class="form-control" name="lcDisposition" placeholder="Lower Court Disposition from 1-12">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" style="color: rgb(248, 40, 40);"><a class="a_notlink" href="{{url_for("homePage")}}#decisionDirection_description">Decision Direction</a> {{decisionDirection}}</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Predict</button>
+        <div id="error-message" class="alert alert-danger mt-2" role="alert" style="display: none;">
+            Ocorreu um erro ao enviar o formulário. Tente novamente.
+        </div>
+    </form>
+{% endblock alternative_body %}

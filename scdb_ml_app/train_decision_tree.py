@@ -32,7 +32,7 @@ class train_decision_tree:
     current_directory=getcwd()
 
     def __init__(self) -> None:
-            address = Path(join(self.current_directory,"models\\preprocessed_decision_tree.csv"))
+            address = Path(join(self.current_directory,"scdb_ml_app\\models\\preprocessed_decision_tree.csv"))
             self.base = read_csv(address,sep=';')
             self.previsors = self.base.iloc[:,0:9].values
             self.toPredict = self.base.iloc[:,9].values    
@@ -55,7 +55,7 @@ class train_decision_tree:
         print("Accuracy in tree model was:")
         print(f"{accuracy*100:.1f}%")
         #saving model
-        self.save_model(tree_model_tree,Path(join(self.current_directory,"models\\decision_tree_model.pkl")))
+        self.save_model(tree_model_tree,Path(join(self.current_directory,"scdb_ml_app\\models\\decision_tree_model.pkl")))
         return accuracy
 
     def save_model(self,model,model_pkl_file)->None:

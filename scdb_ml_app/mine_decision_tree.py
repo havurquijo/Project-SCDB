@@ -30,12 +30,12 @@ class mine_decision_tree:
         pass
 
     def download_file(self) -> bool:
-        csv_path = Path(join(self.current_directory,"models\\SCDB_2023_01_justiceCentered_Citation\\SCDB_2023_01_justiceCentered_Citation.csv"))
+        csv_path = Path(join(self.current_directory,"scdb_ml_app\\models\\SCDB_2023_01_justiceCentered_Citation\\SCDB_2023_01_justiceCentered_Citation.csv"))
         if csv_path.exists():
             return True
 
         url = 'http://scdb.wustl.edu/_brickFiles/2023_01/SCDB_2023_01_justiceCentered_Citation.csv.zip'
-        file_name_local = Path(join(self.current_directory,'models\\SCDB_2023_01_justiceCentered_Citation.csv.zip'))
+        file_name_local = Path(join(self.current_directory,'scdb_ml_app\\models\\SCDB_2023_01_justiceCentered_Citation.csv.zip'))
 
         response = requests.get(url)
         # Error handling
@@ -50,7 +50,7 @@ class mine_decision_tree:
             return False
 
         # Extract the ZIP file
-        extract_dir = Path(join(self.current_directory,'models\\SCDB_2023_01_justiceCentered_Citation\\'))
+        extract_dir = Path(join(self.current_directory,'scdb_ml_app\\models\\SCDB_2023_01_justiceCentered_Citation\\'))
         extract_dir.mkdir(parents=True, exist_ok=True)
 
         try:
@@ -69,7 +69,7 @@ class mine_decision_tree:
             return False
 
     def load_base(self) -> None:
-        address = Path(join(self.current_directory,"models\\SCDB_2023_01_justiceCentered_Citation\\SCDB_2023_01_justiceCentered_Citation.csv"))
+        address = Path(join(self.current_directory,"scdb_ml_app\\models\\SCDB_2023_01_justiceCentered_Citation\\SCDB_2023_01_justiceCentered_Citation.csv"))
         if address.exists():
             data = pd.read_csv(address, encoding='ISO-8859-1')
             self.base = data[['voteId', 'issueArea', 'petitionerState', 'respondentState', 'jurisdiction', 'caseOriginState', 'caseSourceState', 'certReason', 'lcDisposition', 'decisionDirection']]
@@ -86,8 +86,8 @@ class mine_decision_tree:
             self.base.dropna(subset=['petitionerState', 'respondentState', 'jurisdiction', 'caseOriginState', 'caseSourceState', 'issueArea', 'decisionDirection', 'certReason', 'lcDisposition'], inplace=True)
             self.base = self.base[self.base.decisionDirection != 3]
             # Save the preprocessed data
-            self.base.to_csv(Path(join(self.current_directory,'models\\preprocessed_decision_tree.csv')), sep=';', index=False)
+            self.base.to_csv(Path(join(self.current_directory,'scdb_ml_app\\models\\preprocessed_decision_tree.csv')), sep=';', index=False)
 
     def verify_preprocessed(self) -> bool:
-        address = Path("./models/preprocessed_decision_tree.csv")
+        address = Path(join(self.current_directory,'scdb_ml_app\\models\\preprocessed_decision_tree.csv'))
         return address.exists()

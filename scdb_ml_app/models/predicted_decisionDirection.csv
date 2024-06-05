@@ -1,0 +1,2 @@
+accuracy_var;voteId;issueArea;petitionerState;respondentState;jurisdiction;caseOriginState;caseSourceState;certReason;lcDisposition;decisionDirection;model
+55.7%;1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0;1.0;2.0;Naive_Bayes
