@@ -118,8 +118,8 @@ def mine_all():
     return render_template("mine_all.html")
 
 def remove_cache_filecsv():
-    if exists(Path(join(current_directory,'scdb_ml_app\\models\\predicted_decisionDirection_DTreeC.csv'))):
-        remove(Path(join(current_directory,'scdb_ml_app\\models\\predicted_decisionDirection_DTreeC.csv')))
+    if exists(Path(join(current_directory,'scdb_ml_app\\models\\predicted_decisionDirection.csv'))):
+        remove(Path(join(current_directory,'scdb_ml_app\\models\\predicted_decisionDirection.csv')))
         return True
     return False
 #End Decision Tree Classifier
@@ -160,10 +160,6 @@ def temporal_series():
                             checkbox_status182=checkbox_status182, 
                             checkbox_status365=checkbox_status365)
 #End Temporal series
-
-#Naive bayes
-
-#End Naive bayes
 
 #Base models
 @app.route("/train_base/<model>",methods=["GET","POST"])

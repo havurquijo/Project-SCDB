@@ -34,6 +34,7 @@ scdb_ml_app/static/icon/error.png
 scdb_ml_app/static/icon/mining_ml.png
 scdb_ml_app/static/icon/ml.png
 scdb_ml_app/static/icon/save.png
+scdb_ml_app/static/icon/subplot_figure.html
 scdb_ml_app/static/icon/temporal_series_image.png
 scdb_ml_app/static/js/create_model.js
 scdb_ml_app/static/js/mining_all.js

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: SCDB_ML_app
-Version: 1.3.0
+Version: 1.3.1
 Summary: A MACHINE LEARNING ANALYZER DEPLOYED INTO A WEBPAGE
 Home-page: https://github.com/havurquijo/Project-SCDB
 Download-URL: https://github.com/havurquijo/Project-SCDB/archive/refs/tags/v1.0.0-alpha.tar.gz
@@ -23,6 +23,7 @@ Requires-Dist: numpy
 Requires-Dist: scikit-learn
 Requires-Dist: requests
 Requires-Dist: statsmodels
+Requires-Dist: plotly
 
 # A Machine Learning App for Studying the U.S. Supreme Court Database
 [![Static Badge](https://img.shields.io/badge/pypi-v1.3.0-blue)](https://pypi.org/project/SCDB-ML-app/1.3.0/)  
