@@ -2,7 +2,7 @@
 [![Static Badge](https://img.shields.io/badge/pypi-v1.3.0-blue)](https://pypi.org/project/SCDB-ML-app/1.3.0/)  
 [![Static Badge](https://img.shields.io/badge/license-APGL3.0-green)](https://github.com/havurquijo/Project-SCDB/blob/v1.0.1-alpha/LICENSE.txt)  
 [![Static Badge](https://img.shields.io/badge/data_analyzed%3A-SCDB-AD1313)](http://scdb.wustl.edu/about.php)  
-[![Static Badge](https://img.shields.io/badge/running_on%3A-AWS(ec2)-red)](http://18.222.133.83:5000/)  
+[![Static Badge](https://img.shields.io/badge/running_on%3A-AWS(ec2)-red)](https://scdb-ml.alcantara-urquijo.com.br/)  
 
 ## Technologies and programming languages utilized
 1. Python -> Mining and processing data, also creating the predictive model and web page app.
